@@ -132,7 +132,7 @@ const HeroSection = () => {
           </div> */}
 
           {/* Stats or Features */}
-          <div className={`mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 transform transition-all duration-700 delay-700 ${
+          {/* <div className={`mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 transform transition-all duration-700 delay-700 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
           }`}>
             {[
@@ -149,16 +149,16 @@ const HeroSection = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      {/* <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
         <div className="w-6 h-10 border-2 border-green-400/50 rounded-full flex justify-center">
           <div className="w-1 h-3 bg-green-400 rounded-full mt-2 animate-pulse"></div>
         </div>
-      </div>
+      </div> */}
 
       {/* Particle Effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

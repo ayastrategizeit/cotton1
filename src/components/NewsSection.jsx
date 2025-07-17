@@ -7,44 +7,107 @@ const NewsSection = () => {
   const isRTL = i18n.language === 'ar';
   
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   // News data with categories and additional information
   const news = [
-    { 
+    {
+      id: 0,
+      title: '    الدورة التدريبية الثالثة نحو استدامة القطن  ',
+      excerpt: 'معهد بحوث القطن ينظم الدورة التدريبية الثالثة نحو استدامة القطن في قارة أفريقيا بالتعاون مع وزارة الخارجية الوكالة المصرية للشراكة من أجل التنمية',
+      date: '2022-10-09',
+      category: 'sustainability',
+      
+      image: 'sustainability'
+    },
+    {
       id: 1,
-      title: t('newsItem1'),
-      excerpt: t('newsExcerpt1'),
-      date: '2024-01-15',
-      category: 'research',
-      readTime: '5 min',
-      image: 'research'
+      title: ' اول مزاد علني للقطن    ',
+      excerpt: 'انطلاق اول مزاد علني للقطن في الفيوم 2023 و2024',
+      date: '2023-09-22',
+      category: 'sustainability',
+      image: 'sustainability'
     },
     { 
       id: 2,
-      title: t('newsItem2'),
-      excerpt: t('newsExcerpt2'),
-      date: '2024-01-10',
-      category: 'innovation',
-      readTime: '3 min',
-      image: 'innovation'
+      title: 'بحوث القطن يستقبل 20 مبعوث ',
+      excerpt: 'بحوث القطن يستقبل 20مبعوث من 12 دولة افريقية للتدريب',
+      date: '2023-10-01',
+      category: 'sustainability',
+      image: 'sustainability'
     },
     { 
       id: 3,
-      title: t('newsItem3'),
-      excerpt: t('newsExcerpt3'),
-      date: '2024-01-05',
+      title: '    وفد افريقي بمحطة سخا بكفر الشيخ',
+      excerpt: 'معهد بحوث القطن يستقبل وفد افريقي بمحطة سخا بكفر الشيخ',
+      date: '2023-10-10',
       category: 'sustainability',
-      readTime: '4 min',
       image: 'sustainability'
     },
     { 
       id: 4,
-      title: t('newsItem4'),
-      excerpt: t('newsExcerpt4'),
-      date: '2024-01-12',
-      category: 'research',
-      readTime: '6 min',
-      image: 'research'
+      title: 'جامعة برج العرب التكنولوجية تستضيف وفد معهد القطن والوفد الافريقي المرافق',
+      excerpt: 'Read More',
+      date: '2023-10-17',
+      category: 'sustainability',
+      image: 'sustainability'
+    },
+    {
+      id: 7,
+      title: 'معهد القطن يكرم 18متدربا من 12 دولة افريقية بالتعاون مع الوكالة المصرية الشراكة من أجل التنمية بوزارة الخارجية',
+      excerpt: '',
+      date: '2023-10-21',
+      category: 'sustainability',
+      image: 'sustainability'
+    },
+    {
+      id: 8,
+      title: 'أحدث اصدار كتاب عن القطن لمدير معهد بحوث القطن الاسبق',
+      excerpt: '',
+      date: '2023-12-15',
+      category: 'sustainability',
+      image: 'sustainability'
+    },
+    {
+      id: 9,
+      title: 'تفاصيل مزاد القطن رقم 11 في محافظات الوجة البحري',
+      excerpt: '',
+      date: '2024-02-15',
+      category: 'sustainability',
+      image: 'sustainability'
+    },
+    {
+      id: 10,
+      title: 'مجلس الوزارء يوافق في اجتماع برئاسة الدكتور مصطفي مدبولي رئيس الوزراء علي تحديد سعر ضمان لتوريد القطن لهذا العام 2024 و 2025',
+      excerpt: '',
+      date: '2024-02-15',
+      category: 'sustainability',
+      image: 'sustainability'
+    },
+    {
+      id: 11,
+      title: 'معهد القطن يطلق اول تدريب للاخصائين والمرشدين بالفيوم',
+      excerpt: '',
+      date: '2024-03-01',
+      category: 'sustainability',
+      image: 'sustainability'
+    },
+    {
+      id: 12,
+      title: 'معهد القطن ينظم اول دورة تدريبية للاخصائين والمرشدين بمحافظة بني سويف',
+      excerpt: '',
+      date: '2024-03-01',
+      category: 'sustainability',
+      image: 'sustainability'
+    },
+    {
+      id: 13,
+      title: 'صدور القرار الوزاري رقم 88 لسنه 2024 بشأن تحديد مناطق زراعة أصناف القطن لموسم 2024',
+      excerpt: '',
+      date: '2024-03-15',
+      category: 'sustainability',
+      image: 'sustainability'
     },
     { 
       id: 5,
@@ -73,9 +136,9 @@ const NewsSection = () => {
     { id: 'sustainability', name: t('sustainability'), icon: Leaf }
   ];
 
-  const filteredNews = selectedCategory === 'all' 
-    ? news 
-    : news.filter(item => item.category === selectedCategory);
+  // Pagination logic
+  const totalPages = Math.ceil(news.length / itemsPerPage);
+  const paginatedNews = news.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const getImageGradient = (imageType) => {
     const gradients = {
@@ -118,30 +181,9 @@ const NewsSection = () => {
           {t('newsTitle')}
         </h2>
 
-        {/* Category Filter */}
-        <div className={`flex flex-wrap justify-center gap-4 mb-12 ${isRTL ? 'font-arabic' : ''}`}>
-          {categories.map((category) => {
-            const IconComponent = category.icon;
-            return (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-full transition-all duration-300 ${
-                  selectedCategory === category.id
-                    ? 'bg-green-600 text-white shadow-lg'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                } ${isRTL ? 'space-x-reverse' : ''}`}
-              >
-                <IconComponent className="w-5 h-5" />
-                <span>{category.name}</span>
-              </button>
-            );
-          })}
-        </div>
-
         {/* News Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredNews.map((item) => (
+          {paginatedNews.map((item) => (
             <div key={item.id} className="bg-gray-50 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               {/* Image/Icon Section */}
               <div className={`h-48 bg-gradient-to-br ${getImageGradient(item.image)} flex items-center justify-center`}>
@@ -182,17 +224,29 @@ const NewsSection = () => {
           ))}
         </div>
 
-        {/* Load More Button */}
-        {filteredNews.length > 6 && (
-          <div className="text-center mt-12">
-            <button className={`bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors ${isRTL ? 'font-arabic' : ''}`}>
-              {t('loadMore')}
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center gap-4 mt-12">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 rounded-lg font-semibold transition-colors ${currentPage === 1 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-green-600 text-white hover:bg-green-700'}`}
+            >
+              {isRTL ? 'التالي' : 'Previous'}
+            </button>
+            <span className="font-bold text-lg">{currentPage} / {totalPages}</span>
+            <button
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 rounded-lg font-semibold transition-colors ${currentPage === totalPages ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-green-600 text-white hover:bg-green-700'}`}
+            >
+              {isRTL ? 'السابق' : 'Next'}
             </button>
           </div>
         )}
 
         {/* No Results Message */}
-        {filteredNews.length === 0 && (
+        {news.length === 0 && (
           <div className={`text-center py-12 ${isRTL ? 'font-arabic' : ''}`}>
             <p className="text-gray-500 text-lg">{t('noNewsFound')}</p>
           </div>
