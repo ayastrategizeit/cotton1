@@ -201,6 +201,7 @@ const NewsSection = () => {
                   <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                     <Clock className="w-4 h-4" />
                     <span>{item.readTime}</span>
+                    
                   </div>
                 </div>
 
